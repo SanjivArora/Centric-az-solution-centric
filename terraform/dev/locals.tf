@@ -10,5 +10,5 @@ locals {
     app-tier        = "Application"
     app-criticality = "Tier 2"
   }
-  common_tags                             = merge(local.default_common_tags, var.common_tags)
+  common_tags = merge(local.default_common_tags, var.common_tags)
 }

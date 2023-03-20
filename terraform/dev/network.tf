@@ -1,26 +1,26 @@
 module "vnet" {
-    source = "../modules/network"
-    resource_group_name = azurerm_resource_group.network_rg.name
-    address_space = ["10.166.212.0/23"]
-    subnet_prefixes = [
-        "10.166.208.0/26", 
-        "10.166.208.128/26", 
-        "10.166.209.0/26",
-        "10.166.209.128/26"
-        ]
-    subnet_names = [        
-        "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1",  
-        "${var.environment}-${var.solution}-sqlmi-sn-${var.location_short_ae}-1", 
-        "${var.environment}-${var.solution}-agw-sn-${var.location_short_ae}-1",
-        "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1"
-        ]
-    vnet_location = azurerm_resource_group.network_rg.location
-    common_tags = local.common_tags
-    location_short_ae = var.location_short_ae
-    environment = var.environment
-    solution = var.solution
-    dns_servers = ["10.166.12.4", "10.166.12.5", "10.167.12.4","10.167.12.5"]
-    
+  source              = "../modules/network"
+  resource_group_name = azurerm_resource_group.network_rg.name
+  address_space       = ["10.166.212.0/23"]
+  subnet_prefixes = [
+    "10.166.208.0/26",
+    "10.166.208.128/26",
+    "10.166.209.0/26",
+    "10.166.209.128/26"
+  ]
+  subnet_names = [
+    "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1",
+    "${var.environment}-${var.solution}-sqlmi-sn-${var.location_short_ae}-1",
+    "${var.environment}-${var.solution}-agw-sn-${var.location_short_ae}-1",
+    "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1"
+  ]
+  vnet_location     = azurerm_resource_group.network_rg.location
+  common_tags       = local.common_tags
+  location_short_ae = var.location_short_ae
+  environment       = var.environment
+  solution          = var.solution
+  dns_servers       = ["10.166.12.4", "10.166.12.5", "10.167.12.4", "10.167.12.5"]
+
   subnet_delegation = {
     "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1" = {
       "Microsoft.Web.serverFarms" = {
@@ -34,9 +34,9 @@ module "vnet" {
       "Microsoft.Sql/managedInstances" = {
         service_name = "Microsoft.Sql/managedInstances"
         service_actions = [
-          "Microsoft.Network/virtualNetworks/subnets/join/action", 
-          "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action", 
-          "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"]
+          "Microsoft.Network/virtualNetworks/subnets/join/action",
+          "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action",
+        "Microsoft.Network/virtualNetworks/subnets/unprepareNetworkPolicies/action"]
       }
     }
   }

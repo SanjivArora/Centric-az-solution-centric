@@ -54,5 +54,5 @@ variable "solution" {
 variable "gateway_address" {
   description = "Gateway IP address for the default route"
   type        = string
-  default = "10.166.5.4"
+  default     = "10.166.5.4"
 }
