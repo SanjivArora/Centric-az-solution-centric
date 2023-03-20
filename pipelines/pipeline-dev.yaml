@@ -18,7 +18,7 @@ stages:
   - stage: plan
     displayName: "Plan and Generate Artifact"
     variables:
-      - group: ARM
+      - group: ARM-dev
     jobs:
       - job: plan 
         displayName: Plan
@@ -135,7 +135,7 @@ stages:
       - approval
     displayName: Deploy
     variables:
-      - group: ARM
+      - group: ARM-dev
     jobs:  
     - job: apply
       displayName: Deploy Terraform plan
