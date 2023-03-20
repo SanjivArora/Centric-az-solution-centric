@@ -32,7 +32,7 @@ resource "azurerm_key_vault_certificate" "agw_cert" {
   key_vault_id = module.app-kv.key_vault_id
 
   certificate {
-    contents = filebase64("centric-self-signed.pfx")
+    contents = filebase64("dev-centric-self-signed.pfx")
     password = "export"
   }
 }

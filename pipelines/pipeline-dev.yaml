@@ -23,6 +23,16 @@ stages:
       - job: plan 
         displayName: Plan
         steps:
+          - task: DownloadSecureFile@1
+            name: sslCert
+            displayName: 'Download SSL certificate'
+            inputs:
+              secureFile: 'centric-self-signed.pfx'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Agent.TempDirectory)'
+              Contents: centric-self-signed.pfx
+              TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/dev'
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Init'
             inputs:
