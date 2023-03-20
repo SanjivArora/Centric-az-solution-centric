@@ -27,7 +27,7 @@ stages:
             name: sslCert
             displayName: 'Download SSL certificate'
             inputs:
-              secureFile: 'centric-self-signed.pfx'
+              secureFile: 'dev-centric-self-signed.pfx'
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(Agent.TempDirectory)'
