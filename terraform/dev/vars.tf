@@ -41,7 +41,7 @@ variable "common_tags" {
 
 variable "environment" {
   description = "resources environment"
-  default     = "poc"
+  default     = "dev"
   type        = string
 }
 
