@@ -31,7 +31,7 @@ stages:
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(Agent.TempDirectory)'
-              Contents: centric-self-signed.pfx
+              Contents: dev-centric-self-signed.pfx
               TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/dev'
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Init'
