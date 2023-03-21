@@ -32,7 +32,7 @@ resource "azurerm_resource_group" "rg" {
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "keyvault" {
-  name                = "${var.environment}-${var.solution}-kv-${var.location_short_ae}-1"
+  name                = var.kv_name
   location            = local.location
   resource_group_name = local.resource_group_name
 
@@ -59,7 +59,7 @@ resource "azurerm_key_vault" "keyvault" {
 
   tags = merge(
     var.common_tags, {
-      Name                = "${var.environment}${var.solution}kv${var.location_short_ae}1"
+      Name                = var.kv_name
     }
   )
 }

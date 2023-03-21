@@ -28,6 +28,12 @@ variable "environment" {
   type        = string
 }
 
+variable "kv_name" {
+  description = "Name of the keyvalut"
+  default     = ""
+  type        = string
+}
+
 variable "rbac_authorization_enabled" {
   type        = bool
   description = "Whether the Key Vault uses Role Based Access Control (RBAC) for authorization of data actions instead of access policies."

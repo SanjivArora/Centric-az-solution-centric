@@ -59,7 +59,7 @@ resource "azurerm_route_table" "this_table" {
     next_hop_in_ip_address = var.gateway_address
   }
   tags = merge(
-    var.common_tags,
+    local.common_tags,
     {
       Name        = "${var.environment}-${var.solution}-rt-${var.location_short_ae}-1"
       description = "Default route table for app subnets in Australia East region"
