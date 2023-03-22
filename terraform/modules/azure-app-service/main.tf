@@ -171,7 +171,7 @@ resource "azurerm_windows_web_app" "this_service" {
   location            = local.location
   resource_group_name = local.resource_group_name
   service_plan_id = local.service_plan_id
-  # virtual_network_subnet_id = var.app_service_vnet_integration_subnet_id
+  virtual_network_subnet_id = var.app_service_vnet_integration_subnet_id
   identity {
   type         = "UserAssigned"
   identity_ids = [azurerm_user_assigned_identity.app_user_identity.id]
@@ -234,11 +234,11 @@ Name = format("%s", "${var.environment}-${var.solution}-${var.service_name}-app-
 )
 }
 
-resource "azurerm_app_service_virtual_network_swift_connection" "app_service_vnet_integration" {
-  count          = var.app_service_vnet_integration_subnet_id == null ? 0 : 1
-  app_service_id = azurerm_windows_web_app.this_service.id
-  subnet_id      = var.app_service_vnet_integration_subnet_id
-}
+# resource "azurerm_app_service_virtual_network_swift_connection" "app_service_vnet_integration" {
+#   count          = var.app_service_vnet_integration_subnet_id == null ? 0 : 1
+#   app_service_id = azurerm_windows_web_app.this_service.id
+#   subnet_id      = var.app_service_vnet_integration_subnet_id
+# }
 
 #---------------------------------------------------------
 # Private Endpoint Creation for App service
