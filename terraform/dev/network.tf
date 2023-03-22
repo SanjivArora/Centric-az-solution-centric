@@ -44,6 +44,7 @@ module "vnet" {
   route_tables_ids = {
     "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1" = azurerm_route_table.this_table.id
     "${var.environment}-${var.solution}-agw-sn-${var.location_short_ae}-1" = azurerm_route_table.this_table.id
+    "${var.environment}-${var.solution}-sqlmi-sn-${var.location_short_ae}-1" = azurerm_route_table.sqlmi_rt.id
   }
 }
 
@@ -62,25 +63,20 @@ resource "azurerm_route_table" "this_table" {
     local.common_tags,
     {
       Name        = "${var.environment}-${var.solution}-rt-${var.location_short_ae}-1"
-      description = "Default route table for app subnets in Australia East region"
     }
   )
 }
 
-# resource "azurerm_route_table" "rt" {
-#   name                = "poc-replaceme-rt-ae-1"
-#   location            = azurerm_resource_group.network_rg.location
-#   resource_group_name = azurerm_resource_group.network_rg.name
 
-#   route {
-#     name                   = "Default"
-#     address_prefix         = "0.0.0.0/0"
-#     next_hop_type          = "Internet"
-#     # next_hop_in_ip_address = "10.10.1.1"
-#   }
-# }
-
-# resource "azurerm_subnet_route_table_association" "app_gw" {
-#   subnet_id      = azurerm_subnet.app_gw.id
-#   route_table_id = azurerm_route_table.rt.id
-# }
+resource "azurerm_route_table" "sqlmi_rt" {
+  name                          = "${var.environment}-${var.solution}-sqlmi-rt-${var.location_short_ae}-1"
+  location                      = azurerm_resource_group.sqlmi_rg.location
+  resource_group_name           = azurerm_resource_group.sqlmi_rg.name
+  disable_bgp_route_propagation = false
+  tags = merge(
+    var.common_tags,
+    {
+      Name        = "${var.environment}-${var.solution}-sqlmi-rt-${var.location_short_ae}-1"
+    }
+  )
+}
