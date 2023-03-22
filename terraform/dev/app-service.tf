@@ -31,6 +31,7 @@ module "pasview-be" {
   app_settings = {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
+    minTlsVersion = "1.2"
   }
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
@@ -51,8 +52,8 @@ module "pasview-fe" {
   log_analytics_data_retention   = 30
   create_service_plan            = false
   service_plan_name              = "${var.environment}-${var.solution}-asp-ae-1"
-  # os_type                        = "Windows"
-  # service_plan_sku_name          = "B1"
+  os_type                        = "Windows"
+  service_plan_sku_name          = "B1"
   create_application_insights    = false
   application_insights_name      = "${var.environment}-${var.solution}-appi-ae-1"
   application_insights_type      = "web"
@@ -72,9 +73,9 @@ module "pasview-fe" {
   app_settings = {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
+    minTlsVersion = "1.2"
   }
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
-  depends_on = [module.pasview-be]
 }
