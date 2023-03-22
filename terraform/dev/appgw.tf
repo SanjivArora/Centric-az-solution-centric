@@ -55,39 +55,41 @@ module "agw_v2" {
   user_assigned_identity_id = azurerm_user_assigned_identity.agw_user_identity.id
 
   appgw_backend_http_settings = [{
-    name                  = "${local.base_name}-backhttpsettings"
+    name                  = "backhttpsettings-${local.base_name}"
     cookie_based_affinity = "Disabled"
     path                  = "/"
     port                  = 443
     protocol              = "Https"
     request_timeout       = 300
-    probe_name            = "${local.base_name}-health-probe"
+    probe_name            = "health-probe-${local.base_name}"
   }]
 
-  appgw_backend_pools = [{
-    name  = "${local.base_name}-backendpool-01"
+  appgw_backend_pools = [
+  
+  {
+    name  = "pasview-frontend"
     fqdns = [local.pasview_frontend]
   },
   {
-    name = "${local.base_name}-backendpool-02"
+    name = "pasview-backend"
     fqdns = [local.pasview_backend]
   }
   
   ]
 
   appgw_routings = [{
-    name                       = "${local.base_name}-routing-https"
+    name                       = "routing-https-${local.base_name}"
     rule_type                  = "PathBasedRouting"
-    http_listener_name         = "${local.base_name}-listener-https"
-    backend_address_pool_name  = "${local.base_name}-backendpool"
-    backend_http_settings_name = "${local.base_name}-backhttpsettings"
-    url_path_map_name = "${local.base_name}-pasview-url-path-map"
+    http_listener_name         = "listener-https-${local.base_name}"
+    backend_address_pool_name  = "backendpool-${local.base_name}"
+    backend_http_settings_name = "backhttpsettings-${local.base_name}"
+    url_path_map_name = "url-path-map-${local.base_name}"
   }]
 
   # custom_frontend_ip_configuration_name = "${local.base_name}-frontipconfig"
 
   appgw_http_listeners = [{
-    name                           = "${local.base_name}-listener-https"
+    name                           = "listener-https-${local.base_name}"
     # frontend_ip_configuration_name = "${local.base_name}-frontipconfig"
     frontend_port_name             = "frontend-https-port"
     protocol                       = "Https"
@@ -111,23 +113,23 @@ module "agw_v2" {
   # }]
 
   appgw_url_path_map = [{
-    name                               = "${local.base_name}-pasview-url-path-map"
-    default_backend_http_settings_name = "${local.base_name}-backhttpsettings"
-    default_backend_address_pool_name  = "${local.base_name}-backendpool-01"
+    name                               = "url-path-map-${local.base_name}"
+    default_backend_http_settings_name = "backhttpsettings-${local.base_name}"
+    default_backend_address_pool_name  = "pasview-frontend"
     # default_rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
     # default_redirect_configuration_name = "${local.base_name}-redirect"
     path_rules = [
       {
-        name                       = "${local.base_name}-frontend-url-path-rule"
-        backend_address_pool_name  = "${local.base_name}-backendpool-01"
-        backend_http_settings_name = "${local.base_name}-backhttpsettings"
+        name                       = "frontend-url-path-rule-${local.base_name}"
+        backend_address_pool_name  = "pasview-frontend"
+        backend_http_settings_name = "backhttpsettings-${local.base_name}"
         # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
         paths                      = ["/PASView_WDHB/*"]
       },
       {
-        name                       = "${local.base_name}-backend-url-path-rule"
-        backend_address_pool_name  = "${local.base_name}-backendpool-02"
-        backend_http_settings_name = "${local.base_name}-backhttpsettings"
+        name                       = "backend-url-path-rule-${local.base_name}"
+        backend_address_pool_name  = "pasview-backend"
+        backend_http_settings_name = "backhttpsettings-${local.base_name}"
         # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
         paths                      = ["/PASView_WDHB_API/*"]
       }
@@ -135,7 +137,7 @@ module "agw_v2" {
   }]
 
   appgw_probes = [{
-    name = "${local.base_name}-health-probe"
+    name = "health-probe-${local.base_name}"
     # host = local.pasview_frontend
     port = 443
     interval = 30
