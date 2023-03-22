@@ -2,10 +2,10 @@ module "app-kv" {
   source  = "../modules/keyvault"
 
   create_resource_group          = false
-  kv_name = "${var.environment}-${var.solution}-kv${var.location_short_ae}-1"
+  kv_name = "${var.environment}-${var.solution}-kv-${var.location_short_ae}-1"
   environment = var.environment
-  resource_group_name            = azurerm_resource_group.common_rg.name
-  location                       = azurerm_resource_group.common_rg.location
+  resource_group_name            = azurerm_resource_group.security_rg.name
+  location                       = azurerm_resource_group.security_rg.location
   common_tags = local.common_tags
   solution = var.solution
 
