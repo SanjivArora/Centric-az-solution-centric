@@ -25,9 +25,13 @@ module "app-kv" {
     "Key Vault Certificates Officer"                     = [azurerm_user_assigned_identity.agw_user_identity.principal_id]
     "Key Vault Reader"          = []
   }
-  private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
+#   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
 }
 
+
+#---------------------------------------------------------
+# SSL certificate for App Gateway
+#----------------------------------------------------------
 resource "azurerm_key_vault_certificate" "agw_cert" {
   name         = "${var.environment}-${var.solution}-agw-ssl-cert-1"
   key_vault_id = module.app-kv.key_vault_id
