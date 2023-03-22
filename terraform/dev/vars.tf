@@ -56,3 +56,9 @@ variable "gateway_address" {
   type        = string
   default     = "10.166.5.4"
 }
+
+variable "zones" {
+  description = "A collection of availability zones to spread the Application Gateway over. This option is only supported for v2 SKUs"
+  type        = list(number)
+  default     = [1]
+}

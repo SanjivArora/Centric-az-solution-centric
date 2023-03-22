@@ -58,7 +58,7 @@ variable "sku" {
 variable "zones" {
   description = "A collection of availability zones to spread the Application Gateway over. This option is only supported for v2 SKUs"
   type        = list(number)
-  default     = [1, 2, 3]
+  default     = []
 }
 
 variable "frontend_port_settings" {

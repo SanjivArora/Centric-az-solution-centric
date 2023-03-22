@@ -8,7 +8,7 @@ resource "azurerm_public_ip" "agw-pip" {
   location            = azurerm_resource_group.agw_rg.location
   allocation_method   = "Static"
   sku = "Standard"
-  zones = [1, 2, 3]
+  zones = var.zones
   tags = merge(
     local.common_tags, {
       Name = format("%s", "${var.environment}-${var.solution}-agw-pip-${var.location_short_ae}-1")
@@ -49,6 +49,7 @@ module "agw_v2" {
   appgw_name          = local.base_name
   location            = azurerm_resource_group.agw_rg.location
   resource_group_name = azurerm_resource_group.agw_rg.name
+  zones = var.zones
   appgw_pip_id = azurerm_public_ip.agw-pip.id
   subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-agw-sn-${var.location_short_ae}-1")
   appgw_private_ip = "10.166.209.10"
