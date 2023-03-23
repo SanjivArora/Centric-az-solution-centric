@@ -74,7 +74,7 @@ resource "azurerm_route_table" "sqlmi_rt" {
   resource_group_name           = azurerm_resource_group.sqlmi_rg.name
   disable_bgp_route_propagation = false
   tags = merge(
-    var.common_tags,
+    local.common_tags,
     {
       Name        = "${var.environment}-${var.solution}-sqlmi-rt-${var.location_short_ae}-1"
     }

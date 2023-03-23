@@ -19,11 +19,11 @@ module "app-kv" {
   }
 
     role_assignments = {
-    # "Key Vault Secrets User"    = [module.pasview-be.app_user_assigned_identity_object_id, module.pasview-fe.app_user_assigned_identity_object_id ]
-    "Contributor"               = []
+    "Key Vault Secrets User"    = [module.pasview-be.app_user_assigned_identity_object_id, module.pasview-fe.app_user_assigned_identity_object_id]
+    # "Key Vault Crypto Service Encryption User"              = [azurerm_user_assigned_identity.storage_user_identity.principal_id]
     "Key Vault Secrets Officer" = [azurerm_user_assigned_identity.agw_user_identity.principal_id]
     "Key Vault Certificates Officer"                     = [azurerm_user_assigned_identity.agw_user_identity.principal_id]
-    "Key Vault Reader"          = []
+    # "Key Vault Crypto Officer"          = [azurerm_user_assigned_identity.storage_user_identity.principal_id]
   }
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
 }
@@ -41,3 +41,5 @@ resource "azurerm_key_vault_certificate" "agw_cert" {
     password = "export"
   }
 }
+
+
