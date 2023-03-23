@@ -19,7 +19,11 @@ module "app-kv" {
   }
 
     role_assignments = {
-    "Key Vault Secrets User"    = [module.pasview-be.app_user_assigned_identity_object_id, module.pasview-fe.app_user_assigned_identity_object_id]
+    "Key Vault Secrets User"    = [
+        module.pasview-be.app_user_assigned_identity_object_id, 
+        module.pasview-fe.app_user_assigned_identity_object_id,
+        # module.sqlmi.sqlmi_system_identity
+        ]
     # "Key Vault Crypto Service Encryption User"              = [azurerm_user_assigned_identity.storage_user_identity.principal_id]
     "Key Vault Secrets Officer" = [azurerm_user_assigned_identity.agw_user_identity.principal_id]
     "Key Vault Certificates Officer"                     = [azurerm_user_assigned_identity.agw_user_identity.principal_id]

@@ -175,6 +175,10 @@ resource "azurerm_mssql_managed_instance" "this_sqlmi" {
   administrator_login_password = var.sql_admin_password
   timezone_id                  = "New Zealand Standard Time"
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   timeouts {
     create = "300m"
     update = "90m"
