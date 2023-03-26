@@ -156,9 +156,10 @@ resource "azurerm_network_security_rule" "deny_all_outbound" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "sqlmi_association" {
-  subnet_id                 = var.sqlmi_subnet_id //azurerm_subnet.data.id
+  subnet_id                 = var.sqlmi_subnet_id
   network_security_group_id = azurerm_network_security_group.sql_nsg.id
 }
+
 
 resource "azurerm_mssql_managed_instance" "this_sqlmi" {
   name                = "${var.environment}-${var.solution}-sqlmi-${var.location_short_ae}-1"
@@ -196,7 +197,39 @@ resource "azurerm_mssql_managed_instance" "this_sqlmi" {
   )
 }
 
+#---------------------------------------------------------
+# Enable TDE encryption
+#----------------------------------------------------------
 resource "azurerm_mssql_managed_instance_transparent_data_encryption" "sqlmi_transparent_data_encryption" {
   managed_instance_id            = azurerm_mssql_managed_instance.this_sqlmi.id
   key_vault_key_id      = var.keyvault_key_id
+}
+
+#---------------------------------------------------------
+# Send SQLMI vulnerability assessment results to a conatiner
+#----------------------------------------------------------
+
+resource "azurerm_mssql_managed_instance_security_alert_policy" "alert_policy" {
+  resource_group_name        = local.resource_group_name
+  managed_instance_name      = azurerm_mssql_managed_instance.this_sqlmi.name
+  enabled                    = true
+  storage_endpoint           = var.storage_endpoint
+  storage_account_access_key = var.sa_access_key 
+  retention_days             = 90
+}
+
+resource "azurerm_mssql_managed_instance_vulnerability_assessment" "security_assessment" {
+  managed_instance_id        = azurerm_mssql_managed_instance.this_sqlmi.id
+  storage_container_path     = var.sa_conatiner_path 
+  storage_account_access_key = var.sa_access_key 
+
+  recurring_scans {
+    enabled                   = true
+    email_subscription_admins = true
+    emails = [
+      "hATSHOCloudSupport@healthalliance.co.nz",
+      "hatsisvulnerability@healthalliance.co.nz"
+    ]
+  }
+  depends_on = [azurerm_mssql_managed_instance_security_alert_policy.alert_policy]
 }

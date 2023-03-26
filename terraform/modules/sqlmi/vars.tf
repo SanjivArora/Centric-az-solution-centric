@@ -56,3 +56,21 @@ variable keyvault_key_id {
   default     = ""
   description = "Keyvalut id of TDE CM keys"
 }
+
+variable storage_endpoint {
+  type        = string
+  default     = ""
+  description = "Storage account primary blob endpoint"
+}
+
+variable sa_access_key {
+  type        = string
+  default     = ""
+  description = "Storage account access key"
+}
+
+variable sa_conatiner_path {
+  type        = string
+  default     = ""
+  description = "Storage account conatiner path to store assessment results"
+}

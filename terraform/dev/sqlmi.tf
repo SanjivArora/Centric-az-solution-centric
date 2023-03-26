@@ -45,5 +45,9 @@ module "sqlmi" {
   sqlmi_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-sqlmi-sn-${var.location_short_ae}-1")
   sql_admin_password = azurerm_key_vault_secret.sqlmi_administrator_login_password.value
   keyvault_key_id = azurerm_key_vault_key.transparent_data_encryption.id
+  depends_on = [azurerm_route_table.sqlmi_rt]
+  storage_endpoint = azurerm_storage_account.audit_logs.primary_blob_endpoint
+  sa_conatiner_path = "${azurerm_storage_account.audit_logs.primary_blob_endpoint}${azurerm_storage_container.sa_container.name}/"
+  sa_access_key = azurerm_storage_account.audit_logs.primary_access_key
 }
-  
+
