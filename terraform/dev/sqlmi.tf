@@ -34,7 +34,8 @@ resource "azurerm_key_vault_key" "transparent_data_encryption" {
 # Create SQLMI
 #----------------------------------------------------------
 module "sqlmi" {
-  source  = "../modules/sqlmi"
+#   source  = "../modules/sqlmi"
+  source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-sqlmi"
 
   create_resource_group          = false
   environment = var.environment

@@ -43,8 +43,8 @@ locals {
 }
 
 module "agw_v2" {
-  source  = "../modules/app-gw"
-# source = "git::https://dev.azure.com/Sharan-pocs/ha-sharan-test/_git/ha-terraform-module-appservice//modules/app-gw"
+  # source  = "../modules/app-gw"
+  source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-agw"
 
   appgw_name          = local.base_name
   location            = azurerm_resource_group.agw_rg.location

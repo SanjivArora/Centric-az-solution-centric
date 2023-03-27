@@ -1,6 +1,6 @@
 module "pasview-be" {
-  source = "../modules/azure-app-service"
-# source = "git::https://dev.azure.com/Sharan-pocs/ha-sharan-test/_git/ha-terraform-module-appservice//modules/azure-app-service"
+  # source = "../modules/azure-app-service"
+  source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-windows-web-app"
 
   create_resource_group          = false
   environment = var.environment
@@ -39,8 +39,8 @@ module "pasview-be" {
 }
 
 module "pasview-fe" {
-  source = "../modules/azure-app-service"
-# source = "git::https://dev.azure.com/Sharan-pocs/ha-sharan-test/_git/ha-terraform-module-appservice//modules/azure-app-service"
+  # source = "../modules/azure-app-service"
+source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-windows-web-app"
 
   create_resource_group          = false
   environment = var.environment

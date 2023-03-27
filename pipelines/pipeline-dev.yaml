@@ -33,6 +33,9 @@ stages:
               SourceFolder: '$(Agent.TempDirectory)'
               Contents: dev-centric-self-signed.pfx
               TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/dev'
+          - script: | 
+              git config --global url.https://$(System.AccessToken)@dev.azure.com.insteadOf "https://dev.azure.com"
+            displayName: 'Set git config'
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Init'
             inputs:
@@ -89,6 +92,9 @@ stages:
               targetPath: 'terraform/dev/tf.json'
               artifactName: 'tfshow'
               artifactType: pipeline
+          - script: | 
+              git config --global --unset url.https://$(System.AccessToken)@dev.azure.com.insteadOf
+            displayName: 'Unset git config'
   - stage: compliance
     dependsOn: plan
     displayName: 'Static Code Analysis Stage'

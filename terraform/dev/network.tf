@@ -1,5 +1,6 @@
 module "vnet" {
-  source              = "../modules/network"
+  # source              = "../modules/network"
+  source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-network"
   resource_group_name = azurerm_resource_group.network_rg.name
   address_space       = ["10.166.208.0/23"]
   subnet_prefixes = [

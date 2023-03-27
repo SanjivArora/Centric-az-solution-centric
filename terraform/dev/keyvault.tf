@@ -1,5 +1,6 @@
 module "app-kv" {
-  source  = "../modules/keyvault"
+#   source  = "../modules/keyvault"
+  source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-keyvalut"
 
   create_resource_group          = false
   kv_name = "${var.environment}-${var.solution}-kv-${var.location_short_ae}-1"
