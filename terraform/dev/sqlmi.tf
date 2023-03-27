@@ -49,5 +49,7 @@ module "sqlmi" {
   storage_endpoint = azurerm_storage_account.audit_logs.primary_blob_endpoint
   sa_conatiner_path = "${azurerm_storage_account.audit_logs.primary_blob_endpoint}${azurerm_storage_container.sa_container.name}/"
   sa_access_key = azurerm_storage_account.audit_logs.primary_access_key
+  ad_admin_group = data.azuread_group.sql_admin_group.display_name
+  ad_admin_group_object_id = data.azuread_group.sql_admin_group.object_id
 }
 

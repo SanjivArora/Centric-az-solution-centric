@@ -74,3 +74,15 @@ variable sa_conatiner_path {
   default     = ""
   description = "Storage account conatiner path to store assessment results"
 }
+
+variable ad_admin_group {
+  type        = string
+  default     = ""
+  description = "AD group name to grant admin rights"
+}
+
+variable ad_admin_group_object_id {
+  type        = string
+  default     = ""
+  description = "AD admin group object id to grant admin rights"
+}

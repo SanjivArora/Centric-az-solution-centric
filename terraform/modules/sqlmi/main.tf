@@ -233,3 +233,29 @@ resource "azurerm_mssql_managed_instance_vulnerability_assessment" "security_ass
   }
   depends_on = [azurerm_mssql_managed_instance_security_alert_policy.alert_policy]
 }
+
+#---------------------------------------------------------
+# SET AAD admin
+#----------------------------------------------------------
+
+data "azurerm_client_config" "current" {}
+
+resource "azuread_directory_role" "reader" {
+  display_name = "Directory Readers"
+}
+
+# Role assignment below requires the ADO service connection to be manually 
+# temporarily granted the Privileged Role Administrator role in PIM beforehand
+resource "azuread_directory_role_assignment" "sql_managed_instance" {
+  role_id             = azuread_directory_role.reader.object_id
+  principal_object_id = azurerm_mssql_managed_instance.this_sqlmi.identity.0.principal_id
+}
+
+resource "azurerm_mssql_managed_instance_active_directory_administrator" "sql_managed_instance" {
+  managed_instance_id = azurerm_mssql_managed_instance.this_sqlmi.id
+  login_username      = var.ad_admin_group
+  object_id           = var.ad_admin_group_object_id
+  tenant_id           = data.azurerm_client_config.current.tenant_id
+  
+  depends_on = [azuread_directory_role_assignment.sql_managed_instance]
+}
