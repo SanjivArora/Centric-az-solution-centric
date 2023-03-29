@@ -40,6 +40,8 @@ locals {
   base_name = "${var.environment}-${var.solution}-agw-${var.location_short_ae}-1"
   pasview_frontend = module.pasview-fe.app_service_site_hostname
   pasview_backend = module.pasview-be.app_service_site_hostname
+  mailer_frontend = module.mailer-fe.app_service_site_hostname
+  mailer_backend = module.mailer-be.app_service_site_hostname
 }
 
 module "agw_v2" {
@@ -74,6 +76,14 @@ module "agw_v2" {
   {
     name = "pasview-backend"
     fqdns = [local.pasview_backend]
+  },
+  {
+    name = "mailer-frontend"
+    fqdns = [local.mailer_frontend]
+  },
+  {
+    name = "mailer-backend"
+    fqdns = [local.mailer_backend]
   }
   
   ]
@@ -121,18 +131,32 @@ module "agw_v2" {
     # default_redirect_configuration_name = "${local.base_name}-redirect"
     path_rules = [
       {
-        name                       = "frontend-url-path-rule-${local.base_name}"
+        name                       = "pasview-frontend-path-rule-${local.base_name}"
         backend_address_pool_name  = "pasview-frontend"
         backend_http_settings_name = "backhttpsettings-${local.base_name}"
         # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
         paths                      = ["/PASView_WDHB/*"]
       },
       {
-        name                       = "backend-url-path-rule-${local.base_name}"
+        name                       = "pasview-backend-path-rule-${local.base_name}"
         backend_address_pool_name  = "pasview-backend"
         backend_http_settings_name = "backhttpsettings-${local.base_name}"
         # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
         paths                      = ["/PASView_WDHB_API/*"]
+      },
+      {
+        name                       = "mailer-frontend-path-rule-${local.base_name}"
+        backend_address_pool_name  = "mailer-frontend"
+        backend_http_settings_name = "backhttpsettings-${local.base_name}"
+        # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
+        paths                      = ["/Mailer_WDHB/*"]
+      },
+      {
+        name                       = "mailer-backend-path-rule-${local.base_name}"
+        backend_address_pool_name  = "mailer-backend"
+        backend_http_settings_name = "backhttpsettings-${local.base_name}"
+        # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
+        paths                      = ["/Mailer_WDHB_API/*"]
       }
     ]
   }]
