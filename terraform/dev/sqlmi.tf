@@ -54,6 +54,11 @@ module "sqlmi" {
   ad_admin_group_object_id = data.azuread_group.sql_admin_group.object_id
 }
 
+resource "azurerm_mssql_managed_database" "centric_db" {
+  name                = "Centric_WDHB_DEV"
+  managed_instance_id = module.sqlmi.sqlmi_id
+}
+
 resource "azurerm_role_assignment" "sqlmi_contributor" {
   scope                = module.sqlmi.sqlmi_id
   role_definition_name = "SQL Managed Instance Contributor"
