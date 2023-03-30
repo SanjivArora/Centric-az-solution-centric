@@ -40,7 +40,7 @@ stages:
               provider: 'azurerm'
               workingDirectory: 'terraform/acc'
               command: validate
-              backendServiceArm: 'ado-WDHB-Project-Centric-acc'
+              backendServiceArm: 'ado-nr-centric-acc'
               backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
               backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
               backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
@@ -52,7 +52,7 @@ stages:
               command: 'plan'
               commandOptions: '-out $(Build.BuildId).tfplan'
               workingDirectory: 'terraform/acc'
-              environmentServiceNameAzureRM: 'ado-WDHB-Project-Centric-acc'
+              environmentServiceNameAzureRM: 'ado-nr-centric-acc'
           - task: ArchiveFiles@2
             displayName: 'Archive Terraform Plan Files'
             inputs:
@@ -157,7 +157,7 @@ stages:
           provider: 'azurerm'
           workingDirectory: 'terraform/acc'
           command: 'init' 
-          backendServiceArm: 'ado-WDHB-Project-Centric-acc'
+          backendServiceArm: 'ado-nr-centric-acc'
           backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
           backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
           backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
@@ -168,4 +168,4 @@ stages:
           provider: 'azurerm'
           command: 'apply'
           workingDirectory: 'terraform/acc'
-          environmentServiceNameAzureRM: 'ado-WDHB-Project-Centric-acc'
+          environmentServiceNameAzureRM: 'ado-nr-centric-acc'

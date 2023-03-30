@@ -13,16 +13,16 @@
    "resourceTags": {
           "type": "object",
           "defaultValue": {
-            "Name": "Centric",
+            "Name": "Terraform",
             "cost-centre": "",
-            "owner": "michael.carr@healthalliance.co.nz",
-            "business-entity": "WDHB",
-            "environment": "Poc",
-            "security-zone": "Manage",
+            "owner": "Cloud Service Team",
+            "business-entity": "NR",
+            "environment": "Acc",
+            "security-zone": "Managed",
             "role": "Directory",
             "application": "centric",
             "app-tier": "Shared",
-            "app-criticality": "Tier 2"
+            "app-criticality": "Tier 1"
           }
         }
     },
