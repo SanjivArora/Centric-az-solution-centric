@@ -23,7 +23,7 @@ stages:
       - job: plan 
         displayName: Plan
         steps:
-          - task: ms-acclabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2
             displayName: 'Terraform Init'
             inputs:
               provider: 'azurerm'
@@ -34,13 +34,13 @@ stages:
               backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
               backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
               backendAzureRmKey: 'acccentricsoltfsae1'
-          - task: ms-acclabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2
             displayName: 'Terraform Validate'
             inputs:
               provider: 'azurerm'
               workingDirectory: 'terraform/acc'
               command: validate
-              backendServiceArm: 'ado-nr-centric-acc'
+              backendServiceArm: 'ado-WDHB-Project-Centric-acc'
               backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
               backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
               backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
@@ -52,7 +52,7 @@ stages:
               command: 'plan'
               commandOptions: '-out $(Build.BuildId).tfplan'
               workingDirectory: 'terraform/acc'
-              environmentServiceNameAzureRM: 'ado-nr-centric-acc'
+              environmentServiceNameAzureRM: 'ado-WDHB-Project-Centric-acc'
           - task: ArchiveFiles@2
             displayName: 'Archive Terraform Plan Files'
             inputs:
@@ -151,13 +151,13 @@ stages:
           archiveFilePatterns: 'Artifact/*.tgz' 
           destinationFolder:  'terraform/acc'
           overwriteExistingFiles: true
-      - task: ms-acclabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2
         displayName: 'Terraform Init'
         inputs:
           provider: 'azurerm'
           workingDirectory: 'terraform/acc'
           command: 'init' 
-          backendServiceArm: 'ado-nr-centric-acc'
+          backendServiceArm: 'ado-WDHB-Project-Centric-acc'
           backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
           backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
           backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
@@ -168,4 +168,4 @@ stages:
           provider: 'azurerm'
           command: 'apply'
           workingDirectory: 'terraform/acc'
-          environmentServiceNameAzureRM: 'ado-nr-centric-acc'
+          environmentServiceNameAzureRM: 'ado-WDHB-Project-Centric-acc'
