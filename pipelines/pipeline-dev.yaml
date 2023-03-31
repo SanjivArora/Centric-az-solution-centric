@@ -27,11 +27,11 @@ stages:
             name: sslCert
             displayName: 'Download SSL certificate'
             inputs:
-              secureFile: 'dev-centric-self-signed.pfx'
+              secureFile: 'azure.centric-dev.hanz.health.nz.pfx'
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(Agent.TempDirectory)'
-              Contents: dev-centric-self-signed.pfx
+              Contents: azure.centric-dev.hanz.health.nz.pfx
               TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/dev'
           - script: | 
               git config --global url.https://$(System.AccessToken)@dev.azure.com.insteadOf "https://dev.azure.com"

@@ -54,7 +54,7 @@ resource "azurerm_key_vault_certificate" "agw_cert" {
   key_vault_id = module.app-kv.key_vault_id
 
   certificate {
-    contents = filebase64("acc-centric-self-signed.pfx")
+    contents = filebase64("azure.centric-acc.hanz.health.nz.pfx")
     password = "export"
   }
 }
