@@ -188,11 +188,11 @@ module "agw_v2" {
 # Create A record in private DNS zone
 #----------------------------------------------------------
 
-resource "azurerm_private_dns_a_record" "agw_record" {
-  provider = azurerm.shared_networking
-  name                = "centric-${var.environment}"
-  zone_name           = data.azurerm_private_dns_zone.dns_zone.name
-  resource_group_name = data.azurerm_private_dns_zone.dns_zone.resource_group_name
-  ttl                 = 300
-  records             = [var.agw_frontend_ip] //IP address of Applictaion gateway front end.
-}
+# resource "azurerm_private_dns_a_record" "agw_record" {
+#   provider = azurerm.shared_networking
+#   name                = "centric-${var.environment}"
+#   zone_name           = data.azurerm_private_dns_zone.dns_zone.name
+#   resource_group_name = data.azurerm_private_dns_zone.dns_zone.resource_group_name
+#   ttl                 = 300
+#   records             = [var.agw_frontend_ip] //IP address of Applictaion gateway front end.
+# }
