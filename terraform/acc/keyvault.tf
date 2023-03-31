@@ -20,15 +20,27 @@ module "app-kv" {
   }
 
     role_assignments = {
-    # "Key Vault Secrets User"    = [
-    #     module.pasview-be.app_user_assigned_identity_object_id, 
-    #     module.pasview-fe.app_user_assigned_identity_object_id,
-    #     module.sqlmi.sqlmi_system_identity
-    #     ]
-    # "Key Vault Crypto Service Encryption User"              = [module.sqlmi.sqlmi_system_identity, azurerm_user_assigned_identity.storage_user_identity.principal_id]
-    # "Key Vault Secrets Officer" = [azurerm_user_assigned_identity.agw_user_identity.principal_id, module.mailer-fe.app_user_assigned_identity_object_id]
-    # "Key Vault Certificates Officer"                     = [azurerm_user_assigned_identity.agw_user_identity.principal_id]
-    # "Key Vault Crypto Officer"          = [module.sqlmi.sqlmi_system_identity, azurerm_user_assigned_identity.storage_user_identity.principal_id]
+    "Key Vault Secrets User"    = [
+        module.pasview-be.app_user_assigned_identity_object_id, 
+        module.pasview-fe.app_user_assigned_identity_object_id,
+        # module.sqlmi.sqlmi_system_identity
+        ]
+    "Key Vault Crypto Service Encryption User"              = [
+      # module.sqlmi.sqlmi_system_identity, 
+      azurerm_user_assigned_identity.storage_user_identity.principal_id
+      ]
+    "Key Vault Secrets Officer" = [
+      azurerm_user_assigned_identity.agw_user_identity.principal_id,
+       module.mailer-fe.app_user_assigned_identity_object_id
+       ]
+    "Key Vault Certificates Officer"                     = [
+      azurerm_user_assigned_identity.agw_user_identity.principal_id
+      ]
+
+    "Key Vault Crypto Officer"          = [
+      # module.sqlmi.sqlmi_system_identity,
+       azurerm_user_assigned_identity.storage_user_identity.principal_id
+       ]
   }
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
 }
