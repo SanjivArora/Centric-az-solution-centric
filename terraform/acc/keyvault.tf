@@ -49,13 +49,15 @@ module "app-kv" {
 #---------------------------------------------------------
 # SSL certificate for App Gateway
 #----------------------------------------------------------
+
+
 resource "azurerm_key_vault_certificate" "agw_cert" {
   name         = "${var.environment}-${var.solution}-agw-ssl-cert-1"
   key_vault_id = module.app-kv.key_vault_id
 
   certificate {
     contents = filebase64("azure.centric-acc.hanz.health.nz.pfx")
-    password = "export"
+    password = data.azurerm_key_vault_secret.acc_cert_password.value
   }
 }
 

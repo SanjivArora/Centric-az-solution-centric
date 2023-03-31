@@ -43,8 +43,6 @@ resource "azurerm_key_vault_certificate" "agw_cert" {
 
   certificate {
     contents = filebase64("azure.centric-dev.hanz.health.nz.pfx")
-    password = "export"
+    password = data.azurerm_key_vault_secret.dev_cert_password.value
   }
 }
-
-
