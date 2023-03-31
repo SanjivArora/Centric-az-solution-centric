@@ -18,12 +18,25 @@ stages:
   - stage: plan
     displayName: "Plan and Generate Artifact"
     variables:
-      - group: ARM
+      - group: ARM-acc
     jobs:
       - job: plan 
         displayName: Plan
         steps:
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2
+          - task: DownloadSecureFile@1
+            name: sslCert
+            displayName: 'Download SSL certificate'
+            inputs:
+              secureFile: 'acc-centric-self-signed.pfx'
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: '$(Agent.TempDirectory)'
+              Contents: acc-centric-self-signed.pfx
+              TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/acc'
+          - script: | 
+              git config --global url.https://$(System.AccessToken)@dev.azure.com.insteadOf "https://dev.azure.com"
+            displayName: 'Set git config'
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Init'
             inputs:
               provider: 'azurerm'
@@ -34,13 +47,13 @@ stages:
               backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
               backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
               backendAzureRmKey: 'acccentricsoltfsae1'
-          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2
+          - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Validate'
             inputs:
               provider: 'azurerm'
               workingDirectory: 'terraform/acc'
               command: validate
-              backendServiceArm: 'ado-WDHB-Project-Centric-acc'
+              backendServiceArm: 'ado-nr-centric-acc'
               backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
               backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
               backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
@@ -52,7 +65,7 @@ stages:
               command: 'plan'
               commandOptions: '-out $(Build.BuildId).tfplan'
               workingDirectory: 'terraform/acc'
-              environmentServiceNameAzureRM: 'ado-WDHB-Project-Centric-acc'
+              environmentServiceNameAzureRM: 'ado-nr-centric-acc'
           - task: ArchiveFiles@2
             displayName: 'Archive Terraform Plan Files'
             inputs:
@@ -79,6 +92,9 @@ stages:
               targetPath: 'terraform/acc/tf.json'
               artifactName: 'tfshow'
               artifactType: pipeline
+          - script: | 
+              git config --global --unset url.https://$(System.AccessToken)@dev.azure.com.insteadOf
+            displayName: 'Unset git config'
   - stage: compliance
     dependsOn: plan
     displayName: 'Static Code Analysis Stage'
@@ -135,7 +151,7 @@ stages:
       - approval
     displayName: Deploy
     variables:
-      - group: ARM
+      - group: ARM-acc
     jobs:  
     - job: apply
       displayName: Deploy Terraform plan
@@ -151,13 +167,13 @@ stages:
           archiveFilePatterns: 'Artifact/*.tgz' 
           destinationFolder:  'terraform/acc'
           overwriteExistingFiles: true
-      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2
+      - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
         displayName: 'Terraform Init'
         inputs:
           provider: 'azurerm'
           workingDirectory: 'terraform/acc'
           command: 'init' 
-          backendServiceArm: 'ado-WDHB-Project-Centric-acc'
+          backendServiceArm: 'ado-nr-centric-acc'
           backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
           backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
           backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
@@ -168,4 +184,4 @@ stages:
           provider: 'azurerm'
           command: 'apply'
           workingDirectory: 'terraform/acc'
-          environmentServiceNameAzureRM: 'ado-WDHB-Project-Centric-acc'
+          environmentServiceNameAzureRM: 'ado-nr-centric-acc'
