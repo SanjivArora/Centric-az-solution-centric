@@ -32,6 +32,8 @@ module "pasview-be" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
     minTlsVersion = "1.2"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
   }
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
