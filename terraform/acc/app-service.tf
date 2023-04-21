@@ -28,13 +28,7 @@ module "pasview-be" {
       dotnet_version = "v4.0"
     }
   }
-  app_settings = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
-    InstrumentationEngine_EXTENSION_VERSION = "disabled"
-    minTlsVersion = "1.2"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
-  }
+  app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
@@ -72,13 +66,7 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
     }
 
   }
-  app_settings = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
-    InstrumentationEngine_EXTENSION_VERSION = "disabled"
-    minTlsVersion = "1.2"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
-  }
+  app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
@@ -116,13 +104,7 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
     }
 
   }
-  app_settings = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
-    InstrumentationEngine_EXTENSION_VERSION = "disabled"
-    minTlsVersion = "1.2"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
-  }
+  app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
@@ -160,13 +142,7 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
     }
 
   }
-  app_settings = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
-    InstrumentationEngine_EXTENSION_VERSION = "disabled"
-    minTlsVersion = "1.2"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
-  }
+  app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
