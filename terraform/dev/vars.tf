@@ -62,3 +62,25 @@ variable "zones" {
   type        = list(number)
   default     = [1]
 }
+
+variable "app_settings" {
+  description = "Application settings for App Service. See documentation https://www.terraform.io/docs/providers/azurerm/r/app_service.html#app_settings"
+  type        = map(string)
+  default     = {
+    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
+    InstrumentationEngine_EXTENSION_VERSION = "disabled"
+    minTlsVersion = "1.2"
+    WEBSITE_RUN_FROM_PACKAGE = "1"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
+    APPINSIGHTS_PROFILERFEATURE_VERSION = "1.0.0"
+    APPINSIGHTS_SNAPSHOTFEATURE_VERSION = "1.0.0"
+    ApplicationInsightsAgent_EXTENSION_VERSION = "~2" 
+    DiagnosticServices_EXTENSION_VERSION = "~3"
+    SnapshotDebugger_EXTENSION_VERSION = "disabled"
+    XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled" 
+    XDT_MicrosoftApplicationInsights_Java = "1"
+    XDT_MicrosoftApplicationInsights_Mode = "recommended"
+    XDT_MicrosoftApplicationInsights_NodeJS = "1"
+    XDT_MicrosoftApplicationInsights_PreemptSdk = "disabled"
+  }
+}
