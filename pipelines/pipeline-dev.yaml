@@ -114,8 +114,7 @@ stages:
             downloadPath: $(System.DefaultWorkingDirectory)/'terraform/dev'
         - script: |
                   mkdir CheckovReport
-                  docker pull bridgecrew/checkov
-                  docker run --volume $(System.DefaultWorkingDirectory)/'terraform/dev':/tf --workdir /tf bridgecrew/checkov --download-external-modules true --skip-check CKV_AZURE_39 --framework terraform_plan --file /tf/tf.json --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
+                  checkov -f $(System.DefaultWorkingDirectory)/terraform/dev/tf.json --skip-check CKV_AZURE_39 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
           displayName: 'Do Checkov Static Code Analysis'
         - task: PublishTestResults@2
           displayName: Publish Checkov Test Results
