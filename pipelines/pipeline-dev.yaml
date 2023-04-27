@@ -36,6 +36,10 @@ stages:
           - script: | 
               git config --global url.https://$(System.AccessToken)@dev.azure.com.insteadOf "https://dev.azure.com"
             displayName: 'Set git config'
+          - task: TerraformInstaller@0
+            displayName: 'Terraform Install'
+            inputs:
+              terraformVersion: '$(terraform_version)'
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Init'
             inputs:
