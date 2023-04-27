@@ -12,7 +12,7 @@ trigger:
      include:
      - 'terraform/dev'
      
-pool: azure-container-app
+pool: azure-conatiner-app
 
 stages:
   - stage: plan
