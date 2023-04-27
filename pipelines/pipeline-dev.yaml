@@ -116,7 +116,7 @@ stages:
                   mkdir CheckovReport
                   cd $(System.DefaultWorkingDirectory)/terraform/dev
                   ls
-                  checkov --file tf.json --skip-check CKV_AZURE_39 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
+                  checkov --file tf.json --framework terraform_plan --skip-check CKV_AZURE_39 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
           displayName: 'Do Checkov Static Code Analysis'
         - task: PublishTestResults@2
           displayName: Publish Checkov Test Results
