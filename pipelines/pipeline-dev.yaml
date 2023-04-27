@@ -86,9 +86,9 @@ stages:
               artifactName: '$(Build.BuildId)-tfplan'
               artifactType: pipeline
           - script: |
-              cd $(System.DefaultWorkingDirectory)/'terraform/dev'
+              cd $(System.DefaultWorkingDirectory)/terraform/dev
               ls -l
-              terraform show -json $(System.DefaultWorkingDirectory)/'terraform/dev'/$(Build.BuildId).tfplan > tf.json
+              terraform show -json $(System.DefaultWorkingDirectory)/terraform/dev/$(Build.BuildId).tfplan > tf.json
             displayName: 'Terraform Show'
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Terraform Show Artifact'
@@ -111,10 +111,10 @@ stages:
           inputs:
             source: current 
             artifactName: 'tfshow'
-            downloadPath: $(System.DefaultWorkingDirectory)/'terraform/dev'
+            downloadPath: $(System.DefaultWorkingDirectory)/terraform/dev
         - script: |
                   mkdir CheckovReport
-                  cd $(System.DefaultWorkingDirectory)/'terraform/dev'
+                  cd $(System.DefaultWorkingDirectory)/terraform/dev
                   ls
                   checkov --file tf.json --skip-check CKV_AZURE_39 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
           displayName: 'Do Checkov Static Code Analysis'
