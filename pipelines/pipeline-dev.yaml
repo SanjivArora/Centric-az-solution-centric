@@ -11,8 +11,8 @@ trigger:
   paths:
      include:
      - 'terraform/dev'
-pool:
-  vmImage: ubuntu-latest
+     
+pool: azure-container-app
 
 stages:
   - stage: plan
