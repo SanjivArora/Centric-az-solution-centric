@@ -82,9 +82,9 @@ stages:
               artifactName: '$(Build.BuildId)-tfplan'
               artifactType: pipeline
           - script: |
-              cd $(System.DefaultWorkingDirectory)/'terraform/acc'
+              cd $(System.DefaultWorkingDirectory)/terraform/acc
               ls -l
-              terraform show -json $(System.DefaultWorkingDirectory)/'terraform/acc'/$(Build.BuildId).tfplan > tf.json
+              terraform show -json $(System.DefaultWorkingDirectory)/terraform/acc/$(Build.BuildId).tfplan > tf.json
             displayName: 'Terraform Show'
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Terraform Show Artifact'
@@ -107,11 +107,11 @@ stages:
           inputs:
             source: current 
             artifactName: 'tfshow'
-            downloadPath: $(System.DefaultWorkingDirectory)/'terraform/acc'
+            downloadPath: $(System.DefaultWorkingDirectory)/terraform/acc
         - script: |
                   mkdir CheckovReport
                   docker pull bridgecrew/checkov
-                  docker run --volume $(System.DefaultWorkingDirectory)/'terraform/acc':/tf --workdir /tf bridgecrew/checkov --download-external-modules true --skip-check CKV_AZURE_39 --framework terraform_plan --file /tf/tf.json --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
+                  docker run --volume $(System.DefaultWorkingDirectory)/terraform/acc:/tf --workdir /tf bridgecrew/checkov --download-external-modules true --skip-check CKV_AZURE_39 --framework terraform_plan --file /tf/tf.json --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
           displayName: 'Do Checkov Static Code Analysis'
         - task: PublishTestResults@2
           displayName: Publish Checkov Test Results
