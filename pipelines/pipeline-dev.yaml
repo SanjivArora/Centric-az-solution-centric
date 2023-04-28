@@ -114,9 +114,7 @@ stages:
             downloadPath: $(System.DefaultWorkingDirectory)/terraform/dev
         - script: |
                   mkdir CheckovReport
-                  cd $(System.DefaultWorkingDirectory)/terraform/dev
-                  ls
-                  checkov -f tf.json --framework terraform_plan --check MEDIUM --skip-check CKV_AZURE_39,CKV_AZURE_13 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
+                  checkov -f $(System.DefaultWorkingDirectory)/terraform/dev/tf.json --framework terraform_plan --check MEDIUM --skip-check CKV_AZURE_39,CKV_AZURE_13 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
           displayName: 'Do Checkov Static Code Analysis'
         - task: PublishTestResults@2
           displayName: Publish Checkov Test Results
@@ -183,6 +181,10 @@ stages:
           backendAzureRmStorageAccountName: '$(ARM.StorageAccount.dev.Name)'
           backendAzureRmContainerName: '$(ARM.StorageAccount.dev.Container.Name)'
           backendAzureRmKey: 'devcentricsoltfsae1'
+      - task: TerraformInstaller@0
+        displayName: 'Terraform Install'
+        inputs:
+          terraformVersion: '$(terraform_version)'
       - task: TerraformTaskV2@2
         displayName: 'Terraform Apply'
         inputs:
