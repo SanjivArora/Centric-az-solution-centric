@@ -170,6 +170,10 @@ stages:
           archiveFilePatterns: 'Artifact/*.tgz' 
           destinationFolder:  'terraform/dev'
           overwriteExistingFiles: true
+      - task: TerraformInstaller@0
+        displayName: 'Terraform Install'
+        inputs:
+          terraformVersion: '$(terraform_version)'
       - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
         displayName: 'Terraform Init'
         inputs:
@@ -181,10 +185,6 @@ stages:
           backendAzureRmStorageAccountName: '$(ARM.StorageAccount.dev.Name)'
           backendAzureRmContainerName: '$(ARM.StorageAccount.dev.Container.Name)'
           backendAzureRmKey: 'devcentricsoltfsae1'
-      - task: TerraformInstaller@0
-        displayName: 'Terraform Install'
-        inputs:
-          terraformVersion: '$(terraform_version)'
       - task: TerraformTaskV2@2
         displayName: 'Terraform Apply'
         inputs:
