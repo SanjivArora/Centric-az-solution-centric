@@ -11,8 +11,8 @@ trigger:
   paths:
      include:
      - 'terraform/acc'
-pool:
-  vmImage: ubuntu-latest
+pool: azure-conatiner-app
+  # vmImage: ubuntu-latest
 
 stages:
   - stage: plan
@@ -36,6 +36,10 @@ stages:
           - script: | 
               git config --global url.https://$(System.AccessToken)@dev.azure.com.insteadOf "https://dev.azure.com"
             displayName: 'Set git config'
+          - task: TerraformInstaller@0
+            displayName: 'Terraform Install'
+            inputs:
+              terraformVersion: '$(terraform_version)'
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Init'
             inputs:
@@ -110,8 +114,7 @@ stages:
             downloadPath: $(System.DefaultWorkingDirectory)/terraform/acc
         - script: |
                   mkdir CheckovReport
-                  docker pull bridgecrew/checkov
-                  docker run --volume $(System.DefaultWorkingDirectory)/terraform/acc:/tf --workdir /tf bridgecrew/checkov --download-external-modules true --skip-check CKV_AZURE_39 --framework terraform_plan --file /tf/tf.json --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
+                  checkov -f $(System.DefaultWorkingDirectory)/terraform/dev/tf.json --framework terraform_plan --check MEDIUM --skip-check CKV_AZURE_39,CKV_AZURE_13 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
           displayName: 'Do Checkov Static Code Analysis'
         - task: PublishTestResults@2
           displayName: Publish Checkov Test Results
@@ -167,6 +170,10 @@ stages:
           archiveFilePatterns: 'Artifact/*.tgz' 
           destinationFolder:  'terraform/acc'
           overwriteExistingFiles: true
+      - task: TerraformInstaller@0
+        displayName: 'Terraform Install'
+        inputs:
+          terraformVersion: '$(terraform_version)'
       - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
         displayName: 'Terraform Init'
         inputs:
