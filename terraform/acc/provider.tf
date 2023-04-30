@@ -6,6 +6,10 @@ terraform {
     }
   }
   backend "azurerm" {
+    resource_group_name  = "acc-centric-tf-rg-ae-1"
+    storage_account_name = "acccentrictfsaae1"
+    container_name       = "acc-centric-tf-blob-ae-1"
+    key                  = "acccentricsoltfsae1"
   }
 }
 
