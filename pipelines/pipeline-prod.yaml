@@ -8,8 +8,8 @@ trigger:
     - release/*
     - fix/*
     - feat/*
-  paths:
-     include:
+  paths: 
+     include: 
      - 'terraform/prod'
 pool: azure-conatiner-app
   # vmImage: ubuntu-latest

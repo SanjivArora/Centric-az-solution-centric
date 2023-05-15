@@ -34,7 +34,7 @@ stages:
                   displayName: 'Deploy blob storage account for storing Terraform states'
                   inputs:
                     deploymentScope: 'Resource Group'
-                    azureResourceManagerConnection: 'ado-nr-centric-prod'
+                    azureResourceManagerConnection: 'ado-nr-centric-prod' 
                     subscriptionId: '$(ARM.Subscription.prod.Id)'
                     action: 'Create Or Update Resource Group'
                     resourceGroupName: '$(ARM.ResourceGroup.prod.Name)'
