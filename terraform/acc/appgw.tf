@@ -196,3 +196,15 @@ resource "azurerm_private_dns_a_record" "agw_record" {
   ttl                 = 300
   records             = [var.agw_frontend_ip] //IP address of Applictaion gateway front end.
 }
+
+#--------------------------------------------------------------------------------------------------------
+# Create Virtual network link on KeyValut private DNS zone, to allow read appgw certificate from keyvault 
+#---------------------------------------------------------------------------------------------------------
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link" {
+  provider = azurerm.shared_networking
+  name                  = "privatelink.vaultcore.azure.net-centric-${var.environment}-vnl"
+  resource_group_name   = data.azurerm_private_dns_zone.kv_dns_zone.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.kv_dns_zone.name
+  virtual_network_id    = module.vnet.vnet_id
+}
