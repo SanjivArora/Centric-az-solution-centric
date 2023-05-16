@@ -13,4 +13,3 @@ locals {
   }
   common_tags = merge(local.default_common_tags, var.common_tags)
 }
- 
