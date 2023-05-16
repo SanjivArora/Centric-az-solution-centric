@@ -5,7 +5,7 @@ pool:
   vmImage: 'windows-latest'
 
 stages:
-  - stage: Deploy
+  - stage: Deploy 
     displayName: 'Deploy'
     variables:
       - group: ARM-acc

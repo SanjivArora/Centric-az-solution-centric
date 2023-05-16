@@ -17,7 +17,7 @@ module "app-kv" {
     ip_rules       = ["0.0.0.0/0"]
 
     virtual_network_subnet_ids = []
-  }
+  } 
 
     role_assignments = {
     "Key Vault Secrets User"    = [

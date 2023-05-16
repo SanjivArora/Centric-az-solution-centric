@@ -22,4 +22,4 @@ provider "azurerm" {
   alias           = "shared_networking"
   subscription_id = "ca095a5d-36c0-4d4f-82ff-83580d85ebba"
   features {}
-}
+} 

@@ -26,7 +26,7 @@ variable "retention_in_days" {
 #   description = "The SQL managed instance admin password"
 #   type        = string
 # }
-
+ 
 variable "common_tags" {
   description = "Common tags applied to all the resources created in this module"
   type        = map(string)

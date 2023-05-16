@@ -16,7 +16,7 @@ resource "azurerm_resource_group" "app_rg" {
       Name = "${var.environment}-${var.solution}-app-${var.location_short_ae}-1"
     }
   )
-}
+} 
 
 resource "azurerm_resource_group" "sqlmi_rg" {
   name     = "${var.environment}-${var.solution}-sqlmi-${var.location_short_ae}-1"

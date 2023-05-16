@@ -17,7 +17,7 @@ resource "azurerm_user_assigned_identity" "storage_user_identity" {
 #---------------------------------------------------------
 # Storage account customer managed Key encryption
 #----------------------------------------------------------
-
+ 
 resource "azurerm_key_vault_key" "storage_cmk" {
   name            = "${var.environment}-${var.solution}-cmk-${var.location_short_ae}-1"
   key_vault_id    = module.app-kv.key_vault_id

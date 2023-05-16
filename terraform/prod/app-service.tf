@@ -26,7 +26,7 @@ module "pasview-be" {
     application_stack = {
       current_stack  = "dotnet"
       dotnet_version = "v4.0"
-    }
+    } 
   }
   app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
