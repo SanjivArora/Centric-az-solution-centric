@@ -42,6 +42,7 @@ module "app-kv" {
        azurerm_user_assigned_identity.storage_user_identity.principal_id
        ]
   }
+  private_endpoint_name = "${var.environment}-${var.solution}-kv-pep-${var.location_short_ae}-1"
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
 }
 
