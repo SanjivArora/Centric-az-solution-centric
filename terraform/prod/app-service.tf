@@ -32,7 +32,7 @@ module "pasview-be" {
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
 }
-/* 
+
 module "pasview-fe" {
   # source = "../modules/azure-app-service"
 source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_git/tf-module-windows-web-app"
@@ -142,4 +142,4 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
   common_tags = local.common_tags
-} */
+}
