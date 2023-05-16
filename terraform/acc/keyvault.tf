@@ -14,7 +14,7 @@ module "app-kv" {
   network_acls = {
     bypass         = "AzureServices"
     default_action = "Deny"
-    ip_rules       = ["0.0.0.0/0"]
+    ip_rules       = ["20.227.10.42/32"]
 
     virtual_network_subnet_ids = []
   }

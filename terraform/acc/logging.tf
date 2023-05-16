@@ -118,9 +118,9 @@ resource "azurerm_private_endpoint" "privateendpoint" {
     subresource_names = ["blob"]
     is_manual_connection = false
   }
-tags     = merge(
-var.common_tags, { 
-Name = format("%s", "${var.environment}-${var.solution}-auditsa-pep-${var.location_short_ae}-1")
-} 
-)
+  tags     = merge(
+    local.common_tags, { 
+      Name = format("%s", "${var.environment}-${var.solution}-auditsa-pep-${var.location_short_ae}-1")
+    } 
+  )
 }
