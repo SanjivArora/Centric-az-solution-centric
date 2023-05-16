@@ -1,0 +1,60 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+  - stage: Deploy
+    displayName: 'Deploy'
+    variables:
+      - group: ARM-prod
+    jobs:
+      - deployment: PreRequisites
+        displayName: 'Deploy Pre-Requisite Infrastructure - dev'
+        environment: ARM-prod
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                - task: AzureResourceManagerTemplateDeployment@3
+                  displayName: 'Deploy resource group'
+                  inputs:
+                    deploymentScope: 'Subscription'
+                    azureResourceManagerConnection: 'ado-nr-centric-prod'
+                    subscriptionId: '$(ARM.Subscription.prod.Id)'
+                    location: '$(ARM.ResourceGroup.Location)'
+                    templateLocation: 'Linked artifact'
+                    csmFile: 'ARM-Templates/ResourceGroup/template.json'
+                    csmParametersFile: 'ARM-Templates/ResourceGroup/parameter.json'
+                    overrideParameters: '-rgLocation "$(ARM.ResourceGroup.Location)" -rgName "$(ARM.ResourceGroup.prod.Name)"'
+                    deploymentMode: 'Incremental'
+                - task: AzureResourceManagerTemplateDeployment@3
+                  displayName: 'Deploy blob storage account for storing Terraform states'
+                  inputs:
+                    deploymentScope: 'Resource Group'
+                    azureResourceManagerConnection: 'ado-nr-centric-prod' 
+                    subscriptionId: '$(ARM.Subscription.prod.Id)'
+                    action: 'Create Or Update Resource Group'
+                    resourceGroupName: '$(ARM.ResourceGroup.prod.Name)'
+                    location: '$(ARM.ResourceGroup.Location)'
+                    templateLocation: 'Linked artifact'
+                    csmFile: 'ARM-Templates/StorageAccount/template.json'
+                    csmParametersFile: 'ARM-Templates/StorageAccount/parameter.json'
+                    overrideParameters: '-storageAccountName "$(ARM.StorageAccount.prod.Name)" -containerName "$(ARM.StorageAccount.prod.Container.Name)"'
+                    deploymentMode: 'Incremental'
+                - task: AzureResourceManagerTemplateDeployment@3
+                  displayName: 'Deploy Azure Key Vault for storing Azure Terraform secrets'
+                  inputs:
+                    deploymentScope: 'Resource Group'
+                    azureResourceManagerConnection: 'ado-nr-centric-prod'
+                    subscriptionId: '$(ARM.Subscription.prod.Id)'
+                    action: 'Create Or Update Resource Group'
+                    resourceGroupName: '$(ARM.ResourceGroup.prod.Name)'
+                    location: '$(ARM.ResourceGroup.Location)'
+                    templateLocation: 'Linked artifact'
+                    csmFile: 'ARM-Templates/KeyVault/template.json'
+                    csmParametersFile: 'ARM-Templates/KeyVault/parameter.json'
+                    overrideParameters: '-keyVaultName "$(ARM.AZKeyVault.prod.Name)"'
+                    deploymentMode: 'Incremental'

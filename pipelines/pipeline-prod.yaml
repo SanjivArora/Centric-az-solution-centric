@@ -1,4 +1,4 @@
-name: acc-centric-terraform
+name: prod-centric-terraform
 
 trigger:
   branches:
@@ -8,9 +8,9 @@ trigger:
     - release/*
     - fix/*
     - feat/*
-  paths:
-     include:
-     - 'terraform/acc'
+  paths: 
+     include: 
+     - 'terraform/prod'
 pool: azure-conatiner-app
   # vmImage: ubuntu-latest
 
@@ -18,8 +18,7 @@ stages:
   - stage: plan
     displayName: "Plan and Generate Artifact"
     variables:
-      - group: ARM-acc
-      - group: COMMON
+      - group: ARM-prod
     jobs:
       - job: plan 
         displayName: Plan
@@ -28,12 +27,12 @@ stages:
             name: sslCert
             displayName: 'Download SSL certificate'
             inputs:
-              secureFile: 'azure.centric-acc.hanz.health.nz.pfx'
+              secureFile: 'azure.centric-prod.hanz.health.nz.pfx'
           - task: CopyFiles@2
             inputs:
               SourceFolder: '$(Agent.TempDirectory)'
-              Contents: azure.centric-acc.hanz.health.nz.pfx
-              TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/acc'
+              Contents: azure.centric-prod.hanz.health.nz.pfx
+              TargetFolder: '$(System.DefaultWorkingDirectory)/terraform/prod'
           - script: | 
               git config --global url.https://$(System.AccessToken)@dev.azure.com.insteadOf "https://dev.azure.com"
             displayName: 'Set git config'
@@ -45,36 +44,36 @@ stages:
             displayName: 'Terraform Init'
             inputs:
               provider: 'azurerm'
-              workingDirectory: 'terraform/acc'
+              workingDirectory: 'terraform/prod'
               command: init
-              backendServiceArm: 'ado-nr-centric-acc'
-              backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
-              backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
-              backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
-              backendAzureRmKey: 'acccentricsoltfsae1'
+              backendServiceArm: 'ado-nr-centric-prod'
+              backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.prod.Name)'
+              backendAzureRmStorageAccountName: '$(ARM.StorageAccount.prod.Name)'
+              backendAzureRmContainerName: '$(ARM.StorageAccount.prod.Container.Name)'
+              backendAzureRmKey: 'prodcentricsoltfsae1'
           - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV2@2
             displayName: 'Terraform Validate'
             inputs:
               provider: 'azurerm'
-              workingDirectory: 'terraform/acc'
+              workingDirectory: 'terraform/prod'
               command: validate
-              backendServiceArm: 'ado-nr-centric-acc'
-              backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
-              backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
-              backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
-              backendAzureRmKey: 'acccentricsoltfsae1'
+              backendServiceArm: 'ado-nr-centric-prod'
+              backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.prod.Name)'
+              backendAzureRmStorageAccountName: '$(ARM.StorageAccount.prod.Name)'
+              backendAzureRmContainerName: '$(ARM.StorageAccount.prod.Container.Name)'
+              backendAzureRmKey: 'prodcentricsoltfsae1'
           - task: TerraformTaskV2@2
             displayName: Terraform Plan
             inputs:
               provider: 'azurerm'
               command: 'plan'
               commandOptions: '-out $(Build.BuildId).tfplan'
-              workingDirectory: 'terraform/acc'
-              environmentServiceNameAzureRM: 'ado-nr-centric-acc'
+              workingDirectory: 'terraform/prod'
+              environmentServiceNameAzureRM: 'ado-nr-centric-prod'
           - task: ArchiveFiles@2
             displayName: 'Archive Terraform Plan Files'
             inputs:
-              rootFolderOrFile: 'terraform/acc'
+              rootFolderOrFile: 'terraform/prod'
               includeRootFolder: false
               archiveType: 'tar'
               tarCompression: 'gz'
@@ -87,14 +86,14 @@ stages:
               artifactName: '$(Build.BuildId)-tfplan'
               artifactType: pipeline
           - script: |
-              cd $(System.DefaultWorkingDirectory)/terraform/acc
+              cd $(System.DefaultWorkingDirectory)/terraform/prod
               ls -l
-              terraform show -json $(System.DefaultWorkingDirectory)/terraform/acc/$(Build.BuildId).tfplan > tf.json
+              terraform show -json $(System.DefaultWorkingDirectory)/terraform/prod/$(Build.BuildId).tfplan > tf.json
             displayName: 'Terraform Show'
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Terraform Show Artifact'
             inputs:
-              targetPath: 'terraform/acc/tf.json'
+              targetPath: 'terraform/prod/tf.json'
               artifactName: 'tfshow'
               artifactType: pipeline
           - script: | 
@@ -112,7 +111,7 @@ stages:
           inputs:
             source: current 
             artifactName: 'tfshow'
-            downloadPath: $(System.DefaultWorkingDirectory)/terraform/acc
+            downloadPath: $(System.DefaultWorkingDirectory)/terraform/prod
         - script: |
                   mkdir CheckovReport
                   checkov -f $(System.DefaultWorkingDirectory)/terraform/dev/tf.json --framework terraform_plan --check MEDIUM --skip-check CKV_AZURE_39,CKV_AZURE_13 --output junitxml > $(System.DefaultWorkingDirectory)/CheckovReport/Checkov-Report.xml
@@ -155,8 +154,7 @@ stages:
       - approval
     displayName: Deploy
     variables:
-      - group: ARM-acc
-      - group: COMMON
+      - group: ARM-prod
     jobs:  
     - job: apply
       displayName: Deploy Terraform plan
@@ -170,7 +168,7 @@ stages:
       - task: ExtractFiles@1
         inputs:
           archiveFilePatterns: 'Artifact/*.tgz' 
-          destinationFolder:  'terraform/acc'
+          destinationFolder:  'terraform/prod'
           overwriteExistingFiles: true
       - task: TerraformInstaller@0
         displayName: 'Terraform Install'
@@ -180,17 +178,17 @@ stages:
         displayName: 'Terraform Init'
         inputs:
           provider: 'azurerm'
-          workingDirectory: 'terraform/acc'
+          workingDirectory: 'terraform/prod'
           command: 'init' 
-          backendServiceArm: 'ado-nr-centric-acc'
-          backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.acc.Name)'
-          backendAzureRmStorageAccountName: '$(ARM.StorageAccount.acc.Name)'
-          backendAzureRmContainerName: '$(ARM.StorageAccount.acc.Container.Name)'
-          backendAzureRmKey: 'acccentricsoltfsae1'
+          backendServiceArm: 'ado-nr-centric-prod'
+          backendAzureRmResourceGroupName: '$(ARM.ResourceGroup.prod.Name)'
+          backendAzureRmStorageAccountName: '$(ARM.StorageAccount.prod.Name)'
+          backendAzureRmContainerName: '$(ARM.StorageAccount.prod.Container.Name)'
+          backendAzureRmKey: 'prodcentricsoltfsae1'
       - task: TerraformTaskV2@2
         displayName: 'Terraform Apply'
         inputs:
           provider: 'azurerm'
           command: 'apply'
-          workingDirectory: 'terraform/acc'
-          environmentServiceNameAzureRM: 'ado-nr-centric-acc'
+          workingDirectory: 'terraform/prod'
+          environmentServiceNameAzureRM: 'ado-nr-centric-prod'
