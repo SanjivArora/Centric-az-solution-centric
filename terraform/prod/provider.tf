@@ -5,12 +5,9 @@ terraform {
       version = "3.48.0"
     }
   }
+
   backend "azurerm" {
-    resource_group_name  = "prod-centric-tf-rg-ae-1"
-    storage_account_name = "prodcentrictfsaae1"
-    container_name       = "prod-centric-tf-blob-ae-1"
-    key                  = "prodcentricsoltfsae1"
-  }
+}
 }
 
 provider "azurerm" {

@@ -6,8 +6,8 @@ module "vnet" {
   subnet_prefixes = [
     "10.166.212.0/26",
     "10.166.212.128/26",
-    "10.166.213.160/26",
-    "10.166.213.176/26"
+    "10.166.213.0/26",
+    "10.166.213.128/26"
   ]
   subnet_names = [
     "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1",
