@@ -30,11 +30,11 @@ module "app-kv" {
       azurerm_user_assigned_identity.storage_user_identity.principal_id */
       ]
     "Key Vault Secrets Officer" = [
-      azurerm_user_assigned_identity.agw_user_identity.principal_id,
+    #   azurerm_user_assigned_identity.agw_user_identity.principal_id,
        module.mailer-fe.app_user_assigned_identity_object_id
        ]
     "Key Vault Certificates Officer"                     = [
-      azurerm_user_assigned_identity.agw_user_identity.principal_id 
+    #   azurerm_user_assigned_identity.agw_user_identity.principal_id 
       ]
 
     "Key Vault Crypto Officer"          = [
