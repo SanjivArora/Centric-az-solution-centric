@@ -57,4 +57,4 @@ resource "azurerm_role_assignment" "role_assignments" {
   scope                = one(azurerm_key_vault.keyvault[*].id)
   role_definition_name = each.value.role
   principal_id         = each.value.principal
-}
+} 
