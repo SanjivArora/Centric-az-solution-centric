@@ -2,7 +2,7 @@ module "app-kv" {
 #   source  = "../modules/keyvault"
   source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_git/tf-module-keyvalut"
 
-  create_resource_group          = true
+  create_resource_group          = false
   kv_name = "${var.environment}-${var.solution}-kv-${var.location_short_ae}-1"
   environment = var.environment
   resource_group_name            = azurerm_resource_group.security_rg.name
@@ -30,11 +30,11 @@ module "app-kv" {
       azurerm_user_assigned_identity.storage_user_identity.principal_id */
       ]
     "Key Vault Secrets Officer" = [
-    #   azurerm_user_assigned_identity.agw_user_identity.principal_id,
+       azurerm_user_assigned_identity.agw_user_identity.principal_id,
        module.mailer-fe.app_user_assigned_identity_object_id
        ]
     "Key Vault Certificates Officer"                     = [
-    #   azurerm_user_assigned_identity.agw_user_identity.principal_id 
+      azurerm_user_assigned_identity.agw_user_identity.principal_id 
       ]
 
     "Key Vault Crypto Officer"          = [
