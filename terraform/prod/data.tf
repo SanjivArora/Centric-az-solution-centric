@@ -17,5 +17,5 @@ data "azuread_group" "sql_admin_group" {
  
 data "azurerm_key_vault_secret" "prod_cert_password" {
   name         = "azure-centric-prod-hanz-health-nz"
-  key_vault_id = "/subscriptions/9e964e2d-61fe-4b12-83ed-297941d9d161/resourceGroups/prod-centric-tf-rg-ae-1/providers/Microsoft.KeyVault/vaults/prodcentrictfkvae1"
+  key_vault_id = "/subscriptions/20afafa5-91a5-4cfe-8ce3-c2dcdcebf446/resourceGroups/prod-centric-tf-rg-ae-1/providers/Microsoft.KeyVault/vaults/prodcentrictfkvae1"
 }
