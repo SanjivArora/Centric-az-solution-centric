@@ -60,7 +60,7 @@ variable "zones" {
 variable "agw_frontend_ip" {
   description = "Application Gateway frontend static IP address"
   type        = string
-  default     = "10.166.211.10"
+  default     = "10.166.213.10"
 }
 
 variable "app_settings" {
