@@ -14,7 +14,7 @@ module "app-kv" {
   network_acls = {
     bypass         = "AzureServices"
     default_action = "Deny"
-    ip_rules       = ["0.0.0.0/0"]
+    ip_rules       = ["20.227.10.42"]
 
     virtual_network_subnet_ids = []
   }
@@ -26,6 +26,7 @@ module "app-kv" {
         # module.sqlmi.sqlmi_system_identity
         ]
     "Key Vault Crypto Service Encryption User"              = [
+      azurerm_user_assigned_identity.sql_sa_user_identity.principal_id
      /*  module.sqlmi.sqlmi_system_identity, 
       azurerm_user_assigned_identity.storage_user_identity.principal_id */
       ]
@@ -38,6 +39,7 @@ module "app-kv" {
       ]
 
     "Key Vault Crypto Officer"          = [
+      azurerm_user_assigned_identity.sql_sa_user_identity.principal_id
       /* module.sqlmi.sqlmi_system_identity,
        azurerm_user_assigned_identity.storage_user_identity.principal_id */
        ]

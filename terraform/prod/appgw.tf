@@ -190,7 +190,7 @@ module "agw_v2" {
 
 resource "azurerm_private_dns_a_record" "agw_record" {
   provider = azurerm.shared_networking
-  name                = "centric-${var.environment}"
+  name                = "centric"
   zone_name           = data.azurerm_private_dns_zone.dns_zone.name
   resource_group_name = data.azurerm_private_dns_zone.dns_zone.resource_group_name
   ttl                 = 300
