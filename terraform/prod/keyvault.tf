@@ -28,7 +28,7 @@ module "app-kv" {
     "Key Vault Crypto Service Encryption User"              = [
       # # azurerm_user_assigned_identity.sql_sa_user_identity.principal_id
       # module.sqlmi.sqlmi_system_identity, 
-      azurerm_user_assigned_identity.storage_user_identity.principal_id
+      # azurerm_user_assigned_identity.storage_user_identity.principal_id
       ]
     "Key Vault Secrets Officer" = [
        azurerm_user_assigned_identity.agw_user_identity.principal_id,
