@@ -13,7 +13,8 @@ module "pasview-be" {
   create_service_plan            = true
   service_plan_name              = "${var.environment}-${var.solution}-asp-ae-1"
   os_type                        = "Windows"
-  service_plan_sku_name          = "B1"
+  service_plan_sku_name          = "P1v3"
+  enable_zone_redundancy         = true // this can be set to true only for Premium v2 or Premium v3 App Service plans 
   create_application_insights    = true
   application_insights_name      = "${var.environment}-${var.solution}-appi-ae-1"
   application_insights_type      = "web"
