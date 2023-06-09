@@ -11,7 +11,7 @@ data "azurerm_private_dns_zone" "kv_dns_zone" {
 }
 
 data "azuread_group" "sql_admin_group" {
-  display_name = "Azure_SEC_Role_App_Centric_Full"
+  display_name = "Azure_SEC_Centric_SQLMI_Admin"
   security_enabled = true
 }
  

@@ -63,7 +63,7 @@ resource "azurerm_storage_account" "audit_logs" {
 
   network_rules {
     bypass         = ["AzureServices"]
-    default_action = "Deny"
+    default_action = "Allow"
     ip_rules       = ["20.227.10.42"]
     virtual_network_subnet_ids = []
   }
