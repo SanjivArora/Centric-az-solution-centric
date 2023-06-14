@@ -70,7 +70,7 @@ variable "app_settings" {
     WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
     minTlsVersion = "1.2"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
+    # WEBSITE_RUN_FROM_PACKAGE = "1"
     WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
     WEBSITE_DNS_SERVER = "10.166.12.4"
     WEBSITE_ALT_DNS_SERVER = "10.166.12.5"
