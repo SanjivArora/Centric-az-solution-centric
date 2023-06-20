@@ -67,7 +67,7 @@ variable "app_settings" {
   description = "Application settings for App Service. See documentation https://www.terraform.io/docs/providers/azurerm/r/app_service.html#app_settings"
   type        = map(string)
   default     = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
+    # WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
     minTlsVersion = "1.2"
     # WEBSITE_RUN_FROM_PACKAGE = "1"
