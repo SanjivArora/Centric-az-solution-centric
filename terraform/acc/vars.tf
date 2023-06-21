@@ -67,7 +67,7 @@ variable "app_settings" {
   description = "Application settings for App Service. See documentation https://www.terraform.io/docs/providers/azurerm/r/app_service.html#app_settings"
   type        = map(string)
   default     = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
+    WEBSITE_TIME_ZONE = "New Zealand Standard Time"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
     minTlsVersion = "1.2"
     # WEBSITE_RUN_FROM_PACKAGE = "1"
@@ -85,4 +85,10 @@ variable "app_settings" {
     XDT_MicrosoftApplicationInsights_NodeJS = "1"
     XDT_MicrosoftApplicationInsights_PreemptSdk = "disabled"
   }
+}
+
+variable "authorized_ips" {
+  description = "IPs restriction for App Service. See documentation https://www.terraform.io/docs/providers/azurerm/r/app_service.html#ip_restriction"
+  type        = list(string)
+  default     = ["20.227.10.42/32"]
 }

@@ -54,13 +54,8 @@ module "sqlmi" {
   ad_admin_group_object_id = data.azuread_group.sql_admin_group.object_id
 }
 
-resource "azurerm_mssql_managed_database" "centric_db" {
-  name                = "Centric_WDHB_acc"
-  managed_instance_id = module.sqlmi.sqlmi_id
-}
+# resource "azurerm_mssql_managed_database" "centric_db" {
+#   name                = "Centric_Waitemata_acc"
+#   managed_instance_id = module.sqlmi.sqlmi_id
+# }
 
-resource "azurerm_role_assignment" "sqlmi_contributor" {
-  scope                = module.sqlmi.sqlmi_id
-  role_definition_name = "SQL Managed Instance Contributor"
-  principal_id         =  module.mailer-fe.app_user_assigned_identity_object_id
-}
