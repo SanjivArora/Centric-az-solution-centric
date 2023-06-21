@@ -31,6 +31,7 @@ module "pasview-be" {
   app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
+  authorized_ips = var.authorized_ips
   common_tags = local.common_tags
 }
 
@@ -68,6 +69,7 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
   app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
+  authorized_ips = var.authorized_ips
   common_tags = local.common_tags
 }
 
@@ -102,9 +104,10 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
     }
 
   }
-  app_settings = var.app_settings
+  app_settings = merge(var.app_settings, var.mailer_be_app_settings)
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
+  authorized_ips = var.authorized_ips
   common_tags = local.common_tags
 }
 
@@ -142,5 +145,6 @@ source = "git::https://dev.azure.com/NorthernRegion-dev/az-terraform-modules/_gi
   app_settings = var.app_settings
   app_service_vnet_integration_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-app-sn-${var.location_short_ae}-1")
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
+  authorized_ips = var.authorized_ips
   common_tags = local.common_tags
 }
