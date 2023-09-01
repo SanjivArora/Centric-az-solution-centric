@@ -33,8 +33,23 @@ resource "azurerm_user_assigned_identity" "agw_user_identity" {
 }
 
 #---------------------------------------------------------
+# data sources for App Gateway
+#----------------------------------------------------------
+
+data "azurerm_windows_web_app" "notes-client" {
+  name                = "${var.environment}-notes-client-${var.location_short_ae}-1"
+  resource_group_name = "${var.environment}-notes-rg-${var.location_short_ae}-1"
+}
+
+data "azurerm_windows_web_app" "notes-api" {
+  name                = "${var.environment}-notes-api-${var.location_short_ae}-1"
+  resource_group_name = "${var.environment}-notes-rg-${var.location_short_ae}-1"
+}
+
+#---------------------------------------------------------
 # locals for App Gateway
 #----------------------------------------------------------
+
 
 locals {
   base_name = "${var.environment}-${var.solution}-agw-${var.location_short_ae}-1"
@@ -42,6 +57,8 @@ locals {
   pasview_backend = module.pasview-be.app_service_site_hostname
   mailer_frontend = module.mailer-fe.app_service_site_hostname
   mailer_backend = module.mailer-be.app_service_site_hostname
+  notes_client = data.azurerm_windows_web_app.notes-client.default_hostname
+  notes_api = data.azurerm_windows_web_app.notes-api.default_hostname
 }
 
 module "agw_v2" {
@@ -84,6 +101,14 @@ module "agw_v2" {
   {
     name = "mailer-backend"
     fqdns = [local.mailer_backend]
+  },
+  {
+    name = "notes-client"
+    fqdns = [local.notes_client]
+  },
+  {
+    name = "notes-api"
+    fqdns = [local.notes_api]
   }
   
   ]
@@ -157,6 +182,20 @@ module "agw_v2" {
         backend_http_settings_name = "backhttpsettings-${local.base_name}"
         # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
         paths                      = ["/Mailer_WDHB_API/*"]
+      },
+      {
+        name                       = "notes-client-path-rule-${local.base_name}"
+        backend_address_pool_name  = "notes-client"
+        backend_http_settings_name = "backhttpsettings-${local.base_name}"
+        # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
+        paths                      = ["/Notes_WDHB/*"]
+      },
+      {
+        name                       = "notes-api-path-rule-${local.base_name}"
+        backend_address_pool_name  = "notes-api"
+        backend_http_settings_name = "backhttpsettings-${local.base_name}"
+        # rewrite_rule_set_name      = "${local.base_name}-example-rewrite-rule-set"
+        paths                      = ["/Notes_WDHB_API/*"]
       }
     ]
   }]
