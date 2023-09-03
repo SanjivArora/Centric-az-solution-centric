@@ -1,5 +1,5 @@
 module "app-kv" {
-#   source  = "../modules/keyvault"
+  # source  = "../modules/keyvault"
   source = "git::https://dev.azure.com/NorthernRegion-DEV/az-terraform-modules/_git/tf-module-keyvalut"
 
   create_resource_group          = false
@@ -14,7 +14,7 @@ module "app-kv" {
   network_acls = {
     bypass         = "AzureServices"
     default_action = "Deny"
-    ip_rules       = ["0.0.0.0/0"]
+    ip_rules       = ["20.227.10.42/32"]
 
     virtual_network_subnet_ids = []
   }
@@ -30,6 +30,7 @@ module "app-kv" {
     "Key Vault Certificates Officer"                     = [azurerm_user_assigned_identity.agw_user_identity.principal_id]
     "Key Vault Crypto Officer"          = [module.sqlmi.sqlmi_system_identity, azurerm_user_assigned_identity.storage_user_identity.principal_id]
   }
+  private_endpoint_name = "${var.environment}-${var.solution}-kv-pep-${var.location_short_ae}-1"
   private_endpoint_subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-common-sn-${var.location_short_ae}-1")
 }
 

@@ -54,7 +54,7 @@ module "agw_v2" {
   zones = var.zones
   appgw_pip_id = azurerm_public_ip.agw-pip.id
   subnet_id = lookup(module.vnet.vnet_subnets_name_id, "${var.environment}-${var.solution}-agw-sn-${var.location_short_ae}-1")
-  appgw_private_ip = "10.166.209.10"
+  appgw_private_ip = var.agw_frontend_ip
   user_assigned_identity_id = azurerm_user_assigned_identity.agw_user_identity.id
 
   appgw_backend_http_settings = [{
@@ -194,5 +194,22 @@ resource "azurerm_private_dns_a_record" "agw_record" {
   zone_name           = data.azurerm_private_dns_zone.dns_zone.name
   resource_group_name = data.azurerm_private_dns_zone.dns_zone.resource_group_name
   ttl                 = 300
-  records             = ["10.166.209.10"] //IP address of Applictaion gateway front end.
+  records             = [var.agw_frontend_ip] //IP address of Applictaion gateway front end.
+}
+
+#--------------------------------------------------------------------------------------------------------
+# Create Virtual network link on KeyValut private DNS zone, to allow read appgw certificate from keyvault 
+#---------------------------------------------------------------------------------------------------------
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link" {
+  provider = azurerm.shared_networking
+  name                  = "privatelink.vaultcore.azure.net-centric-${var.environment}-vnl"
+  resource_group_name   = data.azurerm_private_dns_zone.kv_dns_zone.resource_group_name
+  private_dns_zone_name = data.azurerm_private_dns_zone.kv_dns_zone.name
+  virtual_network_id    = module.vnet.vnet_id
+  tags = merge(
+    local.common_tags, {
+      Name = "privatelink.vaultcore.azure.net-centric-${var.environment}-vnl"
+    }
+  )
 }
