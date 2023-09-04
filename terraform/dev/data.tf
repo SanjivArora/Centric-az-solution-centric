@@ -4,8 +4,14 @@ data "azurerm_private_dns_zone" "dns_zone" {
   resource_group_name = "sha-infra-dns-rg-ae-1"
 }
 
+data "azurerm_private_dns_zone" "kv_dns_zone" {
+  provider            = azurerm.shared_networking
+  name                = "privatelink.vaultcore.azure.net"
+  resource_group_name = "sha-infra-dns-rg-ae-1"
+}
+
 data "azuread_group" "sql_admin_group" {
-  display_name = "Azure_SEC_Role_Project_Centric_Full"
+  display_name = "Azure_SEC_Role_App_Centric_Full"
   security_enabled = true
 }
  

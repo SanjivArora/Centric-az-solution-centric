@@ -63,18 +63,27 @@ variable "zones" {
   default     = [1]
 }
 
+variable "agw_frontend_ip" {
+  description = "Application Gateway frontend static IP address"
+  type        = string
+  default     = "10.166.209.10"
+}
+
+
 variable "app_settings" {
   description = "Application settings for App Service. See documentation https://www.terraform.io/docs/providers/azurerm/r/app_service.html#app_settings"
   type        = map(string)
   default     = {
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES     = "10"
+    WEBSITE_TIME_ZONE = "New Zealand Standard Time"
     InstrumentationEngine_EXTENSION_VERSION = "disabled"
     minTlsVersion = "1.2"
-    WEBSITE_RUN_FROM_PACKAGE = "1"
+    # WEBSITE_RUN_FROM_PACKAGE = "1"
     WEBSITE_ENABLE_SYNC_UPDATE_SITE = "true"
+    WEBSITE_DNS_SERVER = "10.166.12.4"
+    WEBSITE_ALT_DNS_SERVER = "10.166.12.5"
     APPINSIGHTS_PROFILERFEATURE_VERSION = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION = "1.0.0"
-    ApplicationInsightsAgent_EXTENSION_VERSION = "~2" 
+    ApplicationInsightsAgent_EXTENSION_VERSION = "~3" 
     DiagnosticServices_EXTENSION_VERSION = "~3"
     SnapshotDebugger_EXTENSION_VERSION = "disabled"
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled" 
